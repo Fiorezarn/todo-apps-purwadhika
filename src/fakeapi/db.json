@@ -1,22 +1,27 @@
 {
   "todo": [
     {
+      "isFinished": false,
       "activity": "Makan",
       "id": 1
     },
     {
+      "isFinished": false,
       "activity": "Mandi",
       "id": 2
     },
     {
+      "isFinished": false,
       "activity": "Coding",
       "id": 3
     },
     {
+      "isFinished": true,
       "activity": "berak dicelana",
       "id": 5
     },
     {
+      "isFinished": true,
       "activity": "raw",
       "id": 6
     }

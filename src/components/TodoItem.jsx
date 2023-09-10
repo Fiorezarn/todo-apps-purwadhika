@@ -20,10 +20,16 @@ class TodoItem extends React.Component {
             Delete
           </button>
           <button
-            onClick={() => this.btnHandler("COMPLETE")}
+            disabled={this.props.todoData.isFinished}
+            onClick={() =>
+              this.props.completeTodoHandler(this.props.todoData.id)
+            }
             className="btn btn-success"
           >
-            Complete
+            {
+              // if ternary
+              this.props.todoData.isFinished ? <strong>Finished</strong> : <em>Complete</em>
+            }
           </button>
         </div>
       </div>

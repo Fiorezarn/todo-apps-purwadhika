@@ -3,7 +3,6 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
 import TodoItem from "./components/TodoItem";
 import Axios from "axios";
-import axios from "axios";
 
 class App extends React.Component {
   state = {
@@ -12,35 +11,64 @@ class App extends React.Component {
   };
 
   fetchTodo = () => {
-    // alert("pler");
-
-    Axios.get("http://localhost:2000/todo").then((response) => {
-      console.log(response.data);
-      this.setState({ todoList: response.data });
-      // alert("pler kuda");
-    });
+    Axios.get("http://localhost:2000/todo")
+      .then((response) => {
+        console.log(response.data);
+        this.setState({ todoList: response.data });
+      })
+      .catch((err) => {
+        alert("Terjadi Kesalahan di server");
+      });
   };
 
   deleteTodo = (id) => {
-    Axios.delete(`http://localhost:2000/todo/${id}`).then(() => {
-      alert("Berhasil Menghapus Data");
-      this.fetchTodo();
-    });
+    Axios.delete(`http://localhost:2000/todo/${id}`)
+      .then(() => {
+        alert("Berhasil Menghapus Data");
+        this.fetchTodo();
+      })
+      .catch((err) => {
+        alert("Terjadi Kesalahan di server");
+      });
+  };
+
+  completeTodo = (id) => {
+    Axios.patch(`http://localhost:2000/todo/${id}`, {
+      isFinished: true,
+    })
+      .then((response) => {
+        alert("Berhasil Complete Todo");
+        this.fetchTodo();
+      })
+      .catch((err) => {
+        alert("Terjadi Kesalahan di server");
+      });
   };
 
   renderTodoList = () => {
     return this.state.todoList.map((val) => {
-      return <TodoItem deleteTodoHandler={this.deleteTodo} todoData={val} />;
+      return (
+        <TodoItem
+          completeTodoHandler={this.completeTodo}
+          deleteTodoHandler={this.deleteTodo}
+          todoData={val}
+        />
+      );
     });
   };
 
   addTodo = () => {
     Axios.post("http://localhost:2000/todo", {
       activity: this.state.inputTodo,
-    }).then(() => {
-      alert("Berhasil menambahkan Todo!");
-      this.fetchTodo();
-    });
+      isFinished: false,
+    })
+      .then(() => {
+        alert("Berhasil menambahkan Todo!");
+        this.fetchTodo();
+      })
+      .catch((err) => {
+        alert("Terjadi Kesalahan di server");
+      });
   };
 
   inputHandler = (event) => {
