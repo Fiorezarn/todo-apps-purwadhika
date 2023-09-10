@@ -5,42 +5,54 @@ import TodoItem from "./components/TodoItem";
 
 class App extends React.Component {
   state = {
-    namaKu: "Reza",
-    user: {
-      username: "Fioreza Radhin Naufal",
-      email: "fioreza@gmail.com",
-    },
-    Array: ["Pisang", "Kucing", "Kambing"],
     todoList: [
       { activity: "Makan", id: 1 },
       { activity: "Mandi", id: 2 },
       { activity: "Coding", id: 3 },
       { activity: "Cuci Piring", id: 4 },
     ],
+    inputTodo: "",
+  };
+
+  deleteTodo = (id) => {
+    this.setState({
+      todoList: this.state.todoList.filter((val) => {
+        return val.id != id;
+      }),
+    });
   };
 
   renderTodoList = () => {
     return this.state.todoList.map((val) => {
-      return <TodoItem todoData={val} />;
+      return <TodoItem deleteTodoHandler={this.deleteTodo} todoData={val} />;
     });
   };
 
   addTodo = () => {
-    // this.setState({ namaKu: "Laela" });
     this.setState({
-      todoList: [...this.state.todoList],
+      todoList: [
+        ...this.state.todoList,
+        { activity: this.state.inputTodo, id: this.state.todoList.length + 1 },
+      ],
     });
+  };
+
+  inputHandler = (event) => {
+    // event.target.value menyimpan value dari input text saat ini
+    this.setState({ inputTodo: event.target.value });
   };
 
   render() {
     return (
       <div>
         <h1>Todo List</h1>
-        <h1>{this.state.namaKu}</h1>
         {this.renderTodoList()}
-        <button onClick={this.addTodo} className="btn btn-primary">
-          Add Todo
-        </button>
+        <div>
+          <input onChange={this.inputHandler} type="text" className="mx-3" />
+          <button onClick={this.addTodo} className="btn btn-primary">
+            Add Todo
+          </button>
+        </div>
       </div>
     );
   }

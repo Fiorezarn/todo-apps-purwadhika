@@ -13,7 +13,10 @@ class TodoItem extends React.Component {
       <div className="my-1 todo-item-container d-flex flex-row justify-content-between">
         {this.props.todoData.activity} ID: {this.props.todoData.id}
         <div>
-          <button onClick={this.deleteBtnhandler} className="btn btn-danger">
+          <button
+            onClick={() => this.props.deleteTodoHandler(this.props.todoData.id)}
+            className="btn btn-danger"
+          >
             Delete
           </button>
           <button
