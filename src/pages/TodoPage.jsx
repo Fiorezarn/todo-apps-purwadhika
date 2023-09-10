@@ -2,6 +2,7 @@ import React from "react";
 import "../css/style.css";
 import TodoItem from "../components/TodoItem";
 import Axios from "axios";
+import { connect } from "react-redux";
 
 class TodoPage extends React.Component {
   state = {
@@ -14,6 +15,7 @@ class TodoPage extends React.Component {
       .then((response) => {
         console.log(response.data);
         this.setState({ todoList: response.data });
+        this.props.changeTodo(response.data.length);
       })
       .catch((err) => {
         alert("Terjadi Kesalahan di server");
@@ -80,7 +82,7 @@ class TodoPage extends React.Component {
       <div className="centered-container">
         <h1>Todo List</h1>
         <button onClick={this.fetchTodo} className="btn btn-success">
-          Get My Todo List
+          Get My Todo List {this.props.todoGlobalState.todoCount}
         </button>
         {this.renderTodoList()}
         <div>
@@ -88,10 +90,60 @@ class TodoPage extends React.Component {
           <button onClick={this.addTodo} className="btn btn-primary">
             Add Todo
           </button>
+          <button
+            onClick={this.props.incrementTodoCount}
+            className="btn btn-warning"
+          >
+            Increment Todo
+          </button>
+          <button
+            onClick={this.props.decrementTodoCount}
+            className="btn btn-info"
+          >
+            Uncrement Todo
+          </button>
+          <button
+            onClick={() => this.props.changeTodo(7)}
+            className="btn btn-dark"
+          >
+            Change Todo
+          </button>
         </div>
       </div>
     );
   }
 }
 
-export default TodoPage;
+const incrementTodoCount = () => {
+  return {
+    type: "INCREMENT_TODO_COUNT",
+  };
+};
+
+const decrementTodoCount = () => {
+  return {
+    type: "DECREMENT_TODO_COUNT",
+  };
+};
+
+const changeTodoCount = (newCount) => {
+  return {
+    type: "CHANGE_TODO_COUNT",
+    payload: newCount,
+  };
+};
+
+const mapStateToProps = (state) => {
+  return {
+    testingProps: 0,
+    todoGlobalState: state.todo,
+  };
+};
+
+const mapDispatchToProps = {
+  incrementTodoCount: incrementTodoCount,
+  decrementTodoCount: decrementTodoCount,
+  changeTodo: changeTodoCount,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoPage);

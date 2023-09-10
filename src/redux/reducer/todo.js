@@ -5,5 +5,14 @@ const init_state = {
 };
 
 export default (state = init_state, action) => {
-  return state;
+  switch (action.type) {
+    case "INCREMENT_TODO_COUNT":
+      return { ...state, todoCount: state.todoCount + 1 };
+    case "DECREMENT_TODO_COUNT":
+      return { ...state, todoCount: state.todoCount - 1 };
+    case "CHANGE_TODO_COUNT":
+      return { ...state, todoCount: action.payload };
+    default:
+      return state;
+  }
 };
