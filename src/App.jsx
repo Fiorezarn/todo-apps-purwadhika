@@ -2,23 +2,29 @@ import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
 import TodoItem from "./components/TodoItem";
+import Axios from "axios";
+import axios from "axios";
 
 class App extends React.Component {
   state = {
-    todoList: [
-      { activity: "Makan", id: 1 },
-      { activity: "Mandi", id: 2 },
-      { activity: "Coding", id: 3 },
-      { activity: "Cuci Piring", id: 4 },
-    ],
+    todoList: [],
     inputTodo: "",
   };
 
+  fetchTodo = () => {
+    // alert("pler");
+
+    Axios.get("http://localhost:2000/todo").then((response) => {
+      console.log(response.data);
+      this.setState({ todoList: response.data });
+      // alert("pler kuda");
+    });
+  };
+
   deleteTodo = (id) => {
-    this.setState({
-      todoList: this.state.todoList.filter((val) => {
-        return val.id != id;
-      }),
+    Axios.delete(`http://localhost:2000/todo/${id}`).then(() => {
+      alert("Berhasil Menghapus Data");
+      this.fetchTodo();
     });
   };
 
@@ -29,11 +35,11 @@ class App extends React.Component {
   };
 
   addTodo = () => {
-    this.setState({
-      todoList: [
-        ...this.state.todoList,
-        { activity: this.state.inputTodo, id: this.state.todoList.length + 1 },
-      ],
+    Axios.post("http://localhost:2000/todo", {
+      activity: this.state.inputTodo,
+    }).then(() => {
+      alert("Berhasil menambahkan Todo!");
+      this.fetchTodo();
     });
   };
 
@@ -46,6 +52,9 @@ class App extends React.Component {
     return (
       <div>
         <h1>Todo List</h1>
+        <button onClick={this.fetchTodo} className="btn btn-success">
+          Get My Todo List
+        </button>
         {this.renderTodoList()}
         <div>
           <input onChange={this.inputHandler} type="text" className="mx-3" />

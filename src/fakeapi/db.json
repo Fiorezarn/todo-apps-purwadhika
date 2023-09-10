@@ -1,0 +1,25 @@
+{
+  "todo": [
+    {
+      "activity": "Makan",
+      "id": 1
+    },
+    {
+      "activity": "Mandi",
+      "id": 2
+    },
+    {
+      "activity": "Coding",
+      "id": 3
+    },
+    {
+      "activity": "berak dicelana",
+      "id": 5
+    },
+    {
+      "activity": "raw",
+      "id": 6
+    }
+  ],
+  "user": []
+}
